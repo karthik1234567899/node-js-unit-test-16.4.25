@@ -1,18 +1,29 @@
-# Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
 version: 0.2
 
 phases:
   install:
     runtime-versions:
       nodejs: 12
+    commands:
+      - npm install
   pre_build:
     commands:
-      - echo Installing source NPM dependencies...
-      - npm install
+      - mkdir -p reports
   build:
     commands:
       - echo Running Tests
       - npm test
   post_build:
     commands:
-      - echo Tests Complete
+      - echo Tests completed on `date`
+
+reports:
+  unit-tests:
+    files:
+      - 'reports/test-results.xml'
+    file-format: JUNITXML
+
+artifacts:
+  files:
+    - reports/test-results.xml
+  name: test-reports
